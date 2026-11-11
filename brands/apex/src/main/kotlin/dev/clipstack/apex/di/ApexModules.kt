@@ -9,7 +9,7 @@ import dev.clipstack.data.common.theme.HybridThemeRepository
 import dev.clipstack.data.rest.api.MockRestCatalogApi
 import dev.clipstack.data.rest.repository.RestCatalogRepository
 import dev.clipstack.data.rest.theme.MockRestThemeApi
-import dev.clipstack.database.ClipStackDatabase
+import dev.clipstack.database.AppDatabase
 import dev.clipstack.database.ServiceCacheLocalDataSource
 import dev.clipstack.domain.repository.CartRepository
 import dev.clipstack.domain.repository.CatalogRepository
@@ -21,7 +21,7 @@ import org.koin.dsl.module
 private val apexDataModule = module {
     single {
         AndroidSqliteDriver(
-            schema = ClipStackDatabase.Schema,
+            schema = AppDatabase.Schema,
             context = androidContext(),
             name = "apex_cache.db",
         )

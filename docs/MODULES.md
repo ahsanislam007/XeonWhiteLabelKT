@@ -1,7 +1,7 @@
 # Module responsibilities
 
 ```text
-ClipStack
+XeonWhiteLabelKT
 ├── build-logic/          Gradle convention plugins (versions live once)
 ├── core/
 │   ├── domain/           Pure Kotlin models, ports, use cases
@@ -52,7 +52,7 @@ ClipStack
 
 ## `:ui:common`
 
-**Owns:** Material 3 design system (`ClipStackTheme`, mappers, spacing) + reusable composables (`ServiceCard`, `CartBar`, `ThemeSourceChip`).  
+**Owns:** Material 3 design system (`WhiteLabelTheme`, mappers, spacing) + reusable composables (`ServiceCard`, `CartBar`, `ThemeSourceChip`).  
 **Does not own:** Brand-specific hex values (those live in `ThemeConfig` from local/remote).
 
 ## `:feature:catalog`

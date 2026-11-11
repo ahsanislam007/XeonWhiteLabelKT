@@ -9,7 +9,7 @@ android {
 
 sqldelight {
     databases {
-        create("ClipStackDatabase") {
+        create("AppDatabase") {
             packageName.set("dev.clipstack.database")
         }
     }

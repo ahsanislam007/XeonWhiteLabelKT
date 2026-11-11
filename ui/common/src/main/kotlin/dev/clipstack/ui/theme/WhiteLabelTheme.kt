@@ -11,19 +11,19 @@ import dev.clipstack.domain.model.ThemeConfig
 import dev.clipstack.domain.model.ThemeSource
 
 val LocalThemeConfig = staticCompositionLocalOf<ThemeConfig> {
-    error("ThemeConfig not provided. Wrap with ClipStackTheme.")
+    error("ThemeConfig not provided. Wrap with WhiteLabelTheme.")
 }
 
-object ClipStackThemeAccessors {
+object WhiteLabelThemeAccessors {
     val config: ThemeConfig
         @Composable
         @ReadOnlyComposable
         get() = LocalThemeConfig.current
 
-    val spacing: ClipStackSpacing
+    val spacing: WhiteLabelSpacing
         @Composable
         @ReadOnlyComposable
-        get() = LocalClipStackSpacing.current
+        get() = LocalWhiteLabelSpacing.current
 }
 
 /**
@@ -31,7 +31,7 @@ object ClipStackThemeAccessors {
  * that can come from local bundles or a remote CMS/API.
  */
 @Composable
-fun ClipStackTheme(
+fun WhiteLabelTheme(
     config: ThemeConfig,
     modifier: Modifier = Modifier,
     content: @Composable () -> Unit,
@@ -42,7 +42,7 @@ fun ClipStackTheme(
 
     CompositionLocalProvider(
         LocalThemeConfig provides config,
-        LocalClipStackSpacing provides ClipStackSpacing(),
+        LocalWhiteLabelSpacing provides WhiteLabelSpacing(),
     ) {
         MaterialTheme(
             colorScheme = colorScheme,

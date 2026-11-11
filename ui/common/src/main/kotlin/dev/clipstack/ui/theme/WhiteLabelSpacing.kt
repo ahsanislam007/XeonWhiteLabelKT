@@ -4,7 +4,7 @@ import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
-data class ClipStackSpacing(
+data class WhiteLabelSpacing(
     val xxs: Dp = 4.dp,
     val xs: Dp = 8.dp,
     val sm: Dp = 12.dp,
@@ -13,4 +13,4 @@ data class ClipStackSpacing(
     val xl: Dp = 32.dp,
 )
 
-val LocalClipStackSpacing = staticCompositionLocalOf { ClipStackSpacing() }
+val LocalWhiteLabelSpacing = staticCompositionLocalOf { WhiteLabelSpacing() }

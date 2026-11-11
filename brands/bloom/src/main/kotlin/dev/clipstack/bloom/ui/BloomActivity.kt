@@ -9,7 +9,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dev.clipstack.feature.catalog.mvi.CatalogViewModel
 import dev.clipstack.feature.catalog.mvi.ThemeViewModel
 import dev.clipstack.feature.catalog.ui.CatalogScreen
-import dev.clipstack.ui.theme.ClipStackTheme
+import dev.clipstack.ui.theme.WhiteLabelTheme
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class BloomActivity : ComponentActivity() {
@@ -21,7 +21,7 @@ class BloomActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             val theme by themeViewModel.theme.collectAsStateWithLifecycle()
-            ClipStackTheme(config = theme) {
+            WhiteLabelTheme(config = theme) {
                 CatalogScreen(
                     viewModel = catalogViewModel,
                     title = theme.displayName,

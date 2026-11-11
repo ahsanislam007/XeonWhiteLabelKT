@@ -1,4 +1,4 @@
-# ClipStack guide (easy read)
+# XeonWhiteLabelKT guide (easy read)
 
 ## 1. What you get
 
@@ -10,7 +10,7 @@ One Android repo → **two installable apps**:
 Both apps share the same booking catalog feature. Only **theme config + DI bindings** change.
 
 ```text
-UI (Compose + ClipStackTheme / Material 3)
+UI (Compose + WhiteLabelTheme / Material 3)
   → ViewModel (MVI intents/state/effects)
     → UseCases
       → Repository ports (interfaces in :core:domain)
@@ -42,7 +42,7 @@ Add services → cart bar appears → **Book** is a stub (wire your checkout lat
 1. Bundled `ThemeConfig` paints immediately (`ThemeSource.LOCAL`).
 2. `HybridThemeRepository.refreshFromRemote()` loads CMS/API tokens.
 3. `ThemeConfigToMaterialMapper` builds M3 `ColorScheme` / `Typography` / `Shapes`.
-4. `ClipStackTheme(config) { … }` applies them app-wide.
+4. `WhiteLabelTheme(config) { … }` applies them app-wide.
 
 See [theme-contract.md](theme-contract.md) for the JSON shape.
 
@@ -58,14 +58,14 @@ Tap the theme chip to force another remote refresh.
 |-------|---------|---------|
 | Screen structure | Yes | `CatalogScreen` in `:feature:catalog` |
 | Card chrome | Yes | `ServiceCard` in `:ui:common` |
-| M3 tokens | Config-driven | `ThemeConfig` → `ClipStackTheme` |
+| M3 tokens | Config-driven | `ThemeConfig` → `WhiteLabelTheme` |
 | CTA copy | Per brand arg | `"Book chair"` vs `"Reserve"` |
 | Data / theme source | Per brand Koin | REST vs Firestore adapters |
 
 ### Pattern
 
 ```kotlin
-ClipStackTheme(config = theme) {
+WhiteLabelTheme(config = theme) {
   CatalogScreen(
     viewModel = catalogViewModel,
     title = theme.displayName,

@@ -5,7 +5,7 @@ import app.cash.sqldelight.db.SqlDriver
 class ServiceCacheLocalDataSource(
     driver: SqlDriver,
 ) {
-    private val queries = ClipStackDatabase(driver).serviceCacheQueries
+    private val queries = AppDatabase(driver).serviceCacheQueries
 
     fun readAll(): List<CachedService> =
         queries.selectAll().executeAsList().map {

@@ -15,7 +15,7 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "ClipStack"
+rootProject.name = "XeonWhiteLabelKT"
 
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 

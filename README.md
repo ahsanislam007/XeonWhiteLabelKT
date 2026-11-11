@@ -1,4 +1,4 @@
-# ClipStack
+# XeonWhiteLabelKT
 
 **White-label Android template for multi-brand booking apps**  
 Barbers · salons · spas · any service business that needs *one codebase, many skins*.
@@ -10,13 +10,13 @@ Barbers · salons · spas · any service business that needs *one codebase, many
 
 ---
 
-## Why ClipStack exists
+## Why XeonWhiteLabelKT exists
 
 Most “multi-brand” Android projects become a mess of copy-pasted screens, hardcoded colors, and one giant networking layer.
 
-ClipStack shows a **production-shaped alternative**:
+XeonWhiteLabelKT shows a **production-shaped alternative**:
 
-| Pain | What ClipStack demonstrates |
+| Pain | What XeonWhiteLabelKT demonstrates |
 |------|-----------------------------|
 | New brand = rewrite the app | Add a `:brands:*` module; reuse features |
 | Design locked in code | **Material 3 design system** with **local + server-driven** themes |
@@ -50,7 +50,7 @@ Same catalog feature. Different skin, copy, and data stack.
 ### Design system (Material 3)
 
 - Full **ColorScheme** (light/dark), **Typography**, **Shapes**, **spacing** tokens  
-- `ClipStackTheme(config)` drives the whole UI from a single `ThemeConfig`  
+- `WhiteLabelTheme(config)` drives the whole UI from a single `ThemeConfig`  
 - **Local-first**: bundled tokens paint instantly (offline)  
 - **Server-driven**: remote payload can rebrand without shipping a new UI layer  
 - Chip in the app bar shows `Local theme` → `Server theme` after refresh  
@@ -84,8 +84,8 @@ Same catalog feature. Different skin, copy, and data stack.
 ## Quick start
 
 ```bash
-git clone https://github.com/ahsanislam007/ClipStack.git
-cd ClipStack
+git clone https://github.com/ahsanislam007/XeonWhiteLabelKT.git
+cd XeonWhiteLabelKT
 
 ./gradlew :brands:apex:installDebug
 ./gradlew :brands:bloom:installDebug
@@ -108,7 +108,7 @@ Bundled ThemeConfig (LOCAL)
  ThemeConfigToMaterialMapper  →  Material 3 ColorScheme / Type / Shapes
         │
         ▼
- ClipStackTheme { CatalogScreen … }
+ WhiteLabelTheme { CatalogScreen … }
 ```
 
 **Product win:** marketing can change primary color, corner radius, and type scale from a CMS.  

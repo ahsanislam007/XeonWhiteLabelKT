@@ -23,10 +23,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
-import dev.clipstack.ui.theme.ClipStackThemeAccessors
+import dev.clipstack.ui.theme.WhiteLabelThemeAccessors
 
 /**
- * Shared M3 card — colors/shapes come from [MaterialTheme] / ClipStack design tokens.
+ * Shared M3 card — colors/shapes come from [MaterialTheme] / XeonWhiteLabelKT design tokens.
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -39,7 +39,7 @@ fun ServiceCard(
     modifier: Modifier = Modifier,
     addLabel: String = "Add",
 ) {
-    val spacing = ClipStackThemeAccessors.spacing
+    val spacing = WhiteLabelThemeAccessors.spacing
     var pressed by remember { mutableStateOf(false) }
     val scale by animateFloatAsState(
         targetValue = if (pressed) 0.98f else 1f,
@@ -92,7 +92,7 @@ fun CartBar(
     onCheckout: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val spacing = ClipStackThemeAccessors.spacing
+    val spacing = WhiteLabelThemeAccessors.spacing
     Row(
         modifier
             .fillMaxWidth()

@@ -34,11 +34,11 @@ import dev.clipstack.feature.catalog.mvi.CatalogViewModel
 import dev.clipstack.ui.components.CartBar
 import dev.clipstack.ui.components.ServiceCard
 import dev.clipstack.ui.components.ThemeSourceChip
-import dev.clipstack.ui.theme.ClipStackThemeAccessors
+import dev.clipstack.ui.theme.WhiteLabelThemeAccessors
 import kotlinx.coroutines.flow.collectLatest
 
 /**
- * Shared catalog screen. Brands supply title + ClipStackTheme; this screen stays brand-agnostic.
+ * Shared catalog screen. Brands supply title + WhiteLabelTheme; this screen stays brand-agnostic.
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -51,7 +51,7 @@ fun CatalogScreen(
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val snackbar = remember { SnackbarHostState() }
-    val spacing = ClipStackThemeAccessors.spacing
+    val spacing = WhiteLabelThemeAccessors.spacing
 
     LaunchedEffect(Unit) {
         viewModel.effects.collectLatest { effect ->
