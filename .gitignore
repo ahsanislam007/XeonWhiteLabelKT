@@ -1,0 +1,15 @@
+*.iml
+.gradle/
+**/build/
+local.properties
+.idea/
+.DS_Store
+captures/
+*.apk
+*.aab
+*.dex
+*.class
+.cxx/
+*.log
+docs/assets/**/*.png
+!docs/assets/**/.gitkeep

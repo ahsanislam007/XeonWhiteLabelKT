@@ -1,0 +1,19 @@
+CREATE TABLE ServiceCache (
+  id TEXT NOT NULL PRIMARY KEY,
+  name TEXT NOT NULL,
+  description TEXT NOT NULL,
+  priceCents INTEGER NOT NULL,
+  durationMinutes INTEGER NOT NULL,
+  category TEXT NOT NULL
+);
+
+selectAll:
+SELECT * FROM ServiceCache;
+
+deleteAll:
+DELETE FROM ServiceCache;
+
+insert:
+INSERT OR REPLACE INTO ServiceCache(
+  id, name, description, priceCents, durationMinutes, category
+) VALUES (?, ?, ?, ?, ?, ?);
