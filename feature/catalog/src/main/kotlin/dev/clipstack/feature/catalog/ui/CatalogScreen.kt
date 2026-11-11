@@ -25,29 +25,33 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import dev.clipstack.domain.model.ThemeSource
 import dev.clipstack.feature.catalog.mapper.MoneyMapper
 import dev.clipstack.feature.catalog.mvi.CatalogIntent
 import dev.clipstack.feature.catalog.mvi.CatalogUiEffect
 import dev.clipstack.feature.catalog.mvi.CatalogViewModel
 import dev.clipstack.ui.components.CartBar
 import dev.clipstack.ui.components.ServiceCard
+import dev.clipstack.ui.components.ThemeSourceChip
+import dev.clipstack.ui.theme.ClipStackThemeAccessors
 import kotlinx.coroutines.flow.collectLatest
 
 /**
- * Shared catalog screen. Brands only supply [title] + theme around this.
- * That is UI segregation: one feature, many skins.
+ * Shared catalog screen. Brands supply title + ClipStackTheme; this screen stays brand-agnostic.
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CatalogScreen(
     viewModel: CatalogViewModel,
     title: String,
+    themeSource: ThemeSource,
+    onRefreshTheme: () -> Unit,
     addLabel: String = "Add",
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val snackbar = remember { SnackbarHostState() }
+    val spacing = ClipStackThemeAccessors.spacing
 
     LaunchedEffect(Unit) {
         viewModel.effects.collectLatest { effect ->
@@ -64,13 +68,16 @@ fun CatalogScreen(
             TopAppBar(
                 title = {
                     Column {
-                        Text(title)
+                        Text(title, style = MaterialTheme.typography.titleLarge)
                         Text(
                             state.sourceLabel,
                             style = MaterialTheme.typography.labelSmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                         )
                     }
+                },
+                actions = {
+                    ThemeSourceChip(source = themeSource, onRefresh = onRefreshTheme)
                 },
             )
         },
@@ -84,6 +91,7 @@ fun CatalogScreen(
             }
         },
         snackbarHost = { SnackbarHost(snackbar) },
+        containerColor = MaterialTheme.colorScheme.background,
     ) { padding ->
         when {
             state.isLoading && state.services.isEmpty() -> {
@@ -101,8 +109,8 @@ fun CatalogScreen(
             else -> {
                 LazyColumn(
                     Modifier.fillMaxSize().padding(padding),
-                    contentPadding = PaddingValues(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(12.dp),
+                    contentPadding = PaddingValues(spacing.md),
+                    verticalArrangement = Arrangement.spacedBy(spacing.sm),
                 ) {
                     items(state.services, key = { it.id }) { item ->
                         AnimatedVisibility(

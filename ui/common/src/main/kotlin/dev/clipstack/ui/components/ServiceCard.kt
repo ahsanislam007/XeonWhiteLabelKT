@@ -23,10 +23,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.unit.dp
+import dev.clipstack.ui.theme.ClipStackThemeAccessors
 
 /**
- * Shared card chrome — brands wrap this inside their own theme colors/typography.
+ * Shared M3 card — colors/shapes come from [MaterialTheme] / ClipStack design tokens.
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -39,6 +39,7 @@ fun ServiceCard(
     modifier: Modifier = Modifier,
     addLabel: String = "Add",
 ) {
+    val spacing = ClipStackThemeAccessors.spacing
     var pressed by remember { mutableStateOf(false) }
     val scale by animateFloatAsState(
         targetValue = if (pressed) 0.98f else 1f,
@@ -53,10 +54,14 @@ fun ServiceCard(
                 scaleX = scale
                 scaleY = scale
             },
+        shape = MaterialTheme.shapes.medium,
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
         onClick = { pressed = !pressed },
     ) {
-        Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        Column(
+            Modifier.padding(spacing.md),
+            verticalArrangement = Arrangement.spacedBy(spacing.xs),
+        ) {
             Text(title, style = MaterialTheme.typography.titleMedium)
             Text(
                 subtitle,
@@ -72,7 +77,9 @@ fun ServiceCard(
                     Text(priceLabel, style = MaterialTheme.typography.titleSmall)
                     Text(metaLabel, style = MaterialTheme.typography.labelMedium)
                 }
-                Button(onClick = onAdd) { Text(addLabel) }
+                Button(onClick = onAdd, shape = MaterialTheme.shapes.small) {
+                    Text(addLabel)
+                }
             }
         }
     }
@@ -85,10 +92,11 @@ fun CartBar(
     onCheckout: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val spacing = ClipStackThemeAccessors.spacing
     Row(
         modifier
             .fillMaxWidth()
-            .padding(16.dp),
+            .padding(spacing.md),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
     ) {

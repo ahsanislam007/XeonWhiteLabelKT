@@ -9,6 +9,7 @@ android {
 
 dependencies {
     implementation(projects.core.domain)
+    implementation(projects.core.dataCommon)
     implementation(projects.core.database)
     implementation(libs.coroutines.core)
     implementation(libs.okhttp)

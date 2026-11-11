@@ -6,20 +6,21 @@ ClipStack
 ├── core/
 │   ├── domain/           Pure Kotlin models, ports, use cases
 │   ├── database/         SQLDelight schema + local cache API
-│   ├── data-common/      Shared data adapters (in-memory cart)
-│   ├── data-rest/        Server A style REST + cache repository (Apex)
-│   ├── data-firebase/    Firebase-style repository (Bloom)
+│   ├── data-common/      Cart + hybrid theme repository + bundled themes
+│   ├── data-rest/        REST catalog + REST theme API (Apex)
+│   ├── data-firebase/    Firestore-style catalog + theme (Bloom)
 │   └── analytics/        Analytics port + NoOp / logging sinks
-├── ui/common/            Shared Compose widgets (no brand colors)
-├── feature/catalog/      Catalog MVI + shared screen
+├── ui/common/            Material 3 design system + shared components
+├── feature/catalog/      Catalog MVI + ThemeViewModel + shared screen
 └── brands/
-    ├── apex/             Apex Cuts application (dark + REST)
-    └── bloom/            Bloom Studio application (light + Firebase-fake)
+    ├── apex/             Apex Cuts application (REST + hybrid theme)
+    └── bloom/            Bloom Studio application (Firebase-fake + hybrid theme)
 ```
+
 
 ## `:core:domain`
 
-**Owns:** `ServiceItem`, `Cart`, repository **interfaces**, use cases.  
+**Owns:** `ServiceItem`, `Cart`, `ThemeConfig`, repository **interfaces**, use cases.  
 **Must not depend on:** Android, Compose, OkHttp, SQLDelight, Firebase.  
 **Why:** Business rules stay portable and testable.
 
@@ -31,13 +32,13 @@ ClipStack
 
 ## `:core:data-common`
 
-**Owns:** `InMemoryCartRepository` (demo cart).  
+**Owns:** `InMemoryCartRepository`, `HybridThemeRepository`, `BundledThemes`, remote theme payload mapper.  
 **Replace later** with remote cart / SQLDelight cart when productizing.
 
 ## `:core:data-rest`
 
-**Owns:** Mock REST API, DTOs, `RestServiceMapper`, `RestCatalogRepository`.  
-**Responsibility:** Talk to Server A shape + write through to SQLDelight.
+**Owns:** Mock REST API, DTOs, `RestServiceMapper`, `RestCatalogRepository`, `MockRestThemeApi`.  
+**Responsibility:** Talk to Server A shape + write through to SQLDelight; fetch remote theme.
 
 ## `:core:data-firebase`
 
@@ -51,23 +52,23 @@ ClipStack
 
 ## `:ui:common`
 
-**Owns:** Reusable composables (`ServiceCard`, `CartBar`) that read **MaterialTheme** tokens.  
-**Does not own:** Brand color schemes (those live in brand modules).
+**Owns:** Material 3 design system (`ClipStackTheme`, mappers, spacing) + reusable composables (`ServiceCard`, `CartBar`, `ThemeSourceChip`).  
+**Does not own:** Brand-specific hex values (those live in `ThemeConfig` from local/remote).
 
 ## `:feature:catalog`
 
-**Owns:** `CatalogIntent` / `CatalogUiState` / `CatalogUiEffect`, `CatalogViewModel`, `CatalogScreen`, feature Koin module.  
+**Owns:** `CatalogIntent` / `CatalogUiState` / `CatalogUiEffect`, `CatalogViewModel`, `ThemeViewModel`, `CatalogScreen`, feature Koin module.  
 **Depends on:** domain ports + ui common.  
-**Does not bind:** which `CatalogRepository` implementation — brands do that.
+**Does not bind:** which `CatalogRepository` / `ThemeRepository` implementation — brands do that.
 
 ## `:brands:apex`
 
-**Owns:** `applicationId`, `ApexTheme`, Apex Koin graph (REST + SQLDelight), launcher activity.  
+**Owns:** `applicationId`, Apex Koin graph (REST + SQLDelight + hybrid theme), launcher activity.  
 **Product story:** barbershop booking skin.
 
 ## `:brands:bloom`
 
-**Owns:** `applicationId`, `BloomTheme`, Bloom Koin graph (Firebase-fake), launcher activity.  
+**Owns:** `applicationId`, Bloom Koin graph (Firebase-fake + hybrid theme), launcher activity.  
 **Product story:** salon booking skin.
 
 ## `:build-logic`

@@ -7,10 +7,10 @@ One Android repo → **two installable apps**:
 1. **Apex Cuts** — men’s barbershop vibe, loads services from a **REST-shaped** API, caches with **SQLDelight**.
 2. **Bloom Studio** — salon vibe, loads services from a **Firebase/Firestore-shaped** source (fake so you don’t need a Google project).
 
-Both apps share the same booking catalog feature. Only **theme + DI bindings** change.
+Both apps share the same booking catalog feature. Only **theme config + DI bindings** change.
 
 ```text
-UI (Compose, brand theme)
+UI (Compose + ClipStackTheme / Material 3)
   → ViewModel (MVI intents/state/effects)
     → UseCases
       → Repository ports (interfaces in :core:domain)
@@ -28,16 +28,29 @@ That is **Clean Architecture** + **Dependency Inversion (SOLID)**.
 ./gradlew :brands:bloom:installDebug
 ```
 
-On the catalog screen, the subtitle under the title tells you the data source:
+On the catalog screen:
 
-- Apex → `Data: REST + SQLDelight cache`
-- Bloom → `Data: Firebase-style (fake Firestore)`
+- Subtitle = data source (`REST + SQLDelight` or `Firebase-style`)
+- Top-right chip = **Local theme** then **Server theme** after remote refresh
 
 Add services → cart bar appears → **Book** is a stub (wire your checkout later).
 
 ---
 
-## 3. How UI is segregated (detailed)
+## 3. Material 3 design system (local + server)
+
+1. Bundled `ThemeConfig` paints immediately (`ThemeSource.LOCAL`).
+2. `HybridThemeRepository.refreshFromRemote()` loads CMS/API tokens.
+3. `ThemeConfigToMaterialMapper` builds M3 `ColorScheme` / `Typography` / `Shapes`.
+4. `ClipStackTheme(config) { … }` applies them app-wide.
+
+See [theme-contract.md](theme-contract.md) for the JSON shape.
+
+Tap the theme chip to force another remote refresh.
+
+---
+
+## 4. How UI is segregated (detailed)
 
 ### Shared vs brand-owned
 
@@ -45,32 +58,31 @@ Add services → cart bar appears → **Book** is a stub (wire your checkout lat
 |-------|---------|---------|
 | Screen structure | Yes | `CatalogScreen` in `:feature:catalog` |
 | Card chrome | Yes | `ServiceCard` in `:ui:common` |
-| Colors / type | **No — per brand** | `ApexTheme` vs `BloomTheme` |
+| M3 tokens | Config-driven | `ThemeConfig` → `ClipStackTheme` |
 | CTA copy | Per brand arg | `"Book chair"` vs `"Reserve"` |
-| Data source | Per brand Koin module | REST+cache vs Firebase |
+| Data / theme source | Per brand Koin | REST vs Firestore adapters |
 
 ### Pattern
 
 ```kotlin
-// Brand only wraps the shared screen
-ApexTheme {
-  CatalogScreen(viewModel, title = "Apex Cuts", addLabel = "Book chair")
+ClipStackTheme(config = theme) {
+  CatalogScreen(
+    viewModel = catalogViewModel,
+    title = theme.displayName,
+    themeSource = theme.source,
+    onRefreshTheme = themeViewModel::refresh,
+    addLabel = "Book chair",
+  )
 }
 ```
 
-```kotlin
-BloomTheme {
-  CatalogScreen(viewModel, title = "Bloom Studio", addLabel = "Reserve")
-}
-```
-
-**Do not** fork `CatalogScreen` per brand. Fork **theme + strings + DI**.
+**Do not** fork `CatalogScreen` per brand. Fork **bundled theme + strings + DI**.
 
 If a brand needs a totally different layout (e.g. map-first), create a new screen in that brand module and still call the same use cases.
 
 ---
 
-## 4. How data is segregated
+## 5. How data is segregated
 
 Domain only knows:
 
@@ -102,7 +114,7 @@ Mappers stay in dedicated objects (`RestServiceMapper`, `FirestoreServiceMapper`
 
 ---
 
-## 5. MVI contract (one screen)
+## 6. MVI contract (one screen)
 
 ```text
 UI --CatalogIntent--> CatalogViewModel --CatalogUiState--> UI
@@ -116,7 +128,7 @@ UI --CatalogIntent--> CatalogViewModel --CatalogUiState--> UI
 
 ---
 
-## 6. Add a third brand in ~10 minutes
+## 7. Add a third brand in ~10 minutes
 
 1. Copy `brands/apex` → `brands/nova`.
 2. Change `applicationId`, theme colors, app name.
@@ -128,7 +140,7 @@ You should **not** copy feature ViewModels.
 
 ---
 
-## 7. SOLID cheat-sheet in this repo
+## 8. SOLID cheat-sheet in this repo
 
 | Principle | Where |
 |-----------|--------|
@@ -140,7 +152,7 @@ You should **not** copy feature ViewModels.
 
 ---
 
-## 8. What this is not
+## 9. What this is not
 
 - Not a full POS / payments product (checkout is stubbed).
 - Not a copy of any private client codebase.
